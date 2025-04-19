@@ -266,7 +266,7 @@ if uploaded_file:
             else:
                 insights.append("📊 No strong seasonality was detected in the data.")
 
-            # Recommendations
+             # Recommendations
             st.markdown("#### 📌 Summary:")
             for insight in insights:
                 st.write(insight)
@@ -278,6 +278,27 @@ if uploaded_file:
             from fpdf import FPDF
             import yagmail
             import base64
+            import os
+            import matplotlib.pyplot as plt
+
+            # Emoji-safe replacement
+            emoji_map = {
+                "📈": "[Upward Trend]",
+                "📉": "[Downward Trend]",
+                "🔮": "[Forecast]",
+                "📊": "[Model]",
+                "✅": "[Good Fit]",
+                "⚠️": "[Warning]",
+                "🔁": "[Seasonality]",
+                "➖": "[Stable]",
+                "📧": "[Email]",
+                "📌": "[Summary]",
+            }
+
+            def replace_emojis(text):
+                for emoji, word in emoji_map.items():
+                    text = text.replace(emoji, word)
+                return text
 
             # Email input field
             email_recipient = st.text_input("Enter your email address to receive full report (PDF format):")
@@ -288,21 +309,17 @@ if uploaded_file:
                     pdf = FPDF()
                     pdf.set_auto_page_break(auto=True, margin=15)
                     pdf.add_page()
-                    pdf.set_font("Arial", size=12)
-                    
-                    # Title
                     pdf.set_font("Arial", 'B', 16)
                     pdf.cell(200, 10, "Quarterly Sales Forecast Report", ln=True, align='C')
                     pdf.ln(10)
 
-                    # Add key insights
+                    # Add key insights (emoji-safe)
                     pdf.set_font("Arial", size=12)
-                    pdf.multi_cell(0, 10, "\n".join(insights))
+                    for insight in insights:
+                        clean_text = replace_emojis(insight)
+                        pdf.multi_cell(0, 10, clean_text)
 
                     # Save plots as images
-                    import matplotlib.pyplot as plt
-                    import os
-
                     plot_paths = []
                     for i, fig in enumerate([fig1, fig2, fig3, fig4]):
                         img_path = os.path.join(tempfile.gettempdir(), f"plot_{i}.png")
@@ -317,7 +334,7 @@ if uploaded_file:
                     report_path = os.path.join(tempfile.gettempdir(), "forecast_report.pdf")
                     pdf.output(report_path)
 
-                    # 2. Send email
+                    # 2. Send email (via .streamlit/secrets.toml)
                     email_user = st.secrets["general"]["email_user"]
                     email_pass = st.secrets["general"]["email_pass"]
                     yag = yagmail.SMTP(user=email_user, password=email_pass)
@@ -328,9 +345,10 @@ if uploaded_file:
                         attachments=report_path
                     )
                     st.success(f"📧 Report sent successfully to {email_recipient}!")
-                
+
                 except Exception as e:
                     st.error(f"❌ Failed to send report: {e}")
+
 
 
             # Step 7: Download Forecast
