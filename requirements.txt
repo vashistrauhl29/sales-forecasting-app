@@ -7,4 +7,5 @@ scikit-learn
 yagmail
 xlsxwriter
 fpdf==1.7.2
+pdfkit
 
