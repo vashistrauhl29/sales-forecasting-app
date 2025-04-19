@@ -26,7 +26,7 @@ forecast_horizon = st.sidebar.slider(
 
 # Sample download
 with open("template_sales_data.xlsx", "rb") as f:
-    st.sidebar.download_button("📥 Download Sample Excel Format", f, file_name="template_sales_data.xlsx")
+    st.sidebar.download_button("📥 Download Sample Excel Template", f, file_name="template_sales_data.xlsx")
 
 if uploaded_file:
     try:
@@ -105,6 +105,21 @@ if uploaded_file:
                     seasonality_type = "multiplicative"
             else:
                 seasonality_type = "none"
+
+            # Optional Insight for Stationarity + Multiplicative Seasonality
+            if stationary and seasonality_type == "multiplicative":
+                with st.expander("🤔 How can the data be both stationary and have multiplicative seasonality?"):
+                    st.markdown("""
+            **Great observation!**  
+            Yes, a time series can be both **stationary** and have **multiplicative seasonality**. Here's how:
+
+            - 📉 **Stationary** means the trend has been removed and the data fluctuates around a stable mean.
+            - ✖️ **Multiplicative seasonality** means seasonal effects scale with the level of the series — the percentage impact is consistent over time.
+            - So, even if the absolute values change, their **relative seasonal pattern remains constant**, and the differenced series appears stable.
+
+            ✅ This is perfectly valid and often seen in real-world business data like sales, revenue, and demand cycles.
+                    """)
+
 
             # Step 5: Forecasting
             st.markdown("### 🚀 Step 5: Forecast")
