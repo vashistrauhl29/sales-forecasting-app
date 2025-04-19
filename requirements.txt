@@ -1,0 +1,9 @@
+streamlit
+pandas
+openpyxl
+matplotlib
+statsmodels
+scikit-learn
+yagmail
+xlsxwriter
+
