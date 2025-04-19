@@ -10,6 +10,10 @@ st.set_page_config(page_title="Sales Forecasting Tool", layout="wide")
 st.title("📊 Quarterly Sales Forecasting Tool")
 st.markdown("Upload your Excel file in the correct format to analyze trends and generate forecasts.")
 
+# Sample download
+with open("template_sales_data.xlsx", "rb") as f:
+    st.sidebar.download_button("📥 Download Sample Excel Template", f, file_name="template_sales_data.xlsx")
+
 # Upload section
 st.sidebar.markdown("### 📎 Upload Sales Excel")
 uploaded_file = st.sidebar.file_uploader("Upload your sales data (.xlsx)", type=["xlsx"])
@@ -24,9 +28,6 @@ forecast_horizon = st.sidebar.slider(
     step=1
 )
 
-# Sample download
-with open("template_sales_data.xlsx", "rb") as f:
-    st.sidebar.download_button("📥 Download Sample Excel Template", f, file_name="template_sales_data.xlsx")
 
 if uploaded_file:
     try:
