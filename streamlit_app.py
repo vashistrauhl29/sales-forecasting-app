@@ -271,6 +271,29 @@ if uploaded_file:
             for insight in insights:
                 st.write(insight)
 
+            # Step 7: Download Forecast
+            st.markdown("### 💾 Download Forecast")
+            csv = forecast_df.to_csv(index=False).encode("utf-8")
+            st.download_button(
+                label="📥 Download Forecast as CSV",
+                data=csv,
+                file_name="forecast_output.csv",
+                mime="text/csv"
+            )
+
+            excel_buffer = io.BytesIO()
+            with pd.ExcelWriter(excel_buffer, engine="xlsxwriter") as writer:
+                forecast_df.to_excel(writer, sheet_name="Forecast", index=False)
+            excel_buffer.seek(0)
+            st.download_button(
+                label="📥 Download Forecast as Excel",
+                data=excel_buffer,
+                file_name="forecast_output.xlsx",
+                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            )
+
+            import yagmail
+
             # Step 10: Generate PDF Report
             st.markdown("### 📤 Step 10: Email Full Report")
 
@@ -349,30 +372,6 @@ if uploaded_file:
                 except Exception as e:
                     st.error(f"❌ Failed to send report: {e}")
 
-
-
-            # Step 7: Download Forecast
-            st.markdown("### 💾 Download Forecast")
-            csv = forecast_df.to_csv(index=False).encode("utf-8")
-            st.download_button(
-                label="📥 Download Forecast as CSV",
-                data=csv,
-                file_name="forecast_output.csv",
-                mime="text/csv"
-            )
-
-            excel_buffer = io.BytesIO()
-            with pd.ExcelWriter(excel_buffer, engine="xlsxwriter") as writer:
-                forecast_df.to_excel(writer, sheet_name="Forecast", index=False)
-            excel_buffer.seek(0)
-            st.download_button(
-                label="📥 Download Forecast as Excel",
-                data=excel_buffer,
-                file_name="forecast_output.xlsx",
-                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-            )
-
-            import yagmail
 
             # Email Export Section
             st.markdown("### 📧 Email Forecast")
