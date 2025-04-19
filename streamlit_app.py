@@ -144,9 +144,10 @@ if uploaded_file:
             # --- ARIMA Model ---
             try:
                 arima_model = ARIMA(df["actual_sales"], order=(1, 1, 1)).fit()
-                arima_predicted = arima_model.fittedvalues
-                arima_rmse = np.sqrt(mean_squared_error(df["actual_sales"].iloc[1:], arima_predicted))
-            except Exception as e:
+                arima_predicted = arima_model.predict(start=1, end=len(df["actual_sales"]) - 1)
+                arima_actual = df["actual_sales"].iloc[1:]
+                arima_rmse = np.sqrt(mean_squared_error(arima_actual, arima_predicted))
+            except:
                 arima_model = None
                 arima_rmse = float("inf")
 
