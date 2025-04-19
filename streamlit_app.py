@@ -308,46 +308,6 @@ if uploaded_file:
                 mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
             )
 
-            import pdfkit
-            import tempfile
-            import streamlit.components.v1 as components
-
-            st.markdown("### 🖨️ Export Full Page as PDF")
-
-            if st.button("📄 Download Full Report (Web View)"):
-                try:
-                    # Create a temporary HTML snapshot
-                    with tempfile.NamedTemporaryFile(delete=False, suffix=".html") as tmp_html:
-                        # Capture everything shown on the page into HTML
-                        html_content = f"""
-                        <html>
-                        <head>
-                            <meta charset="UTF-8">
-                            <title>Forecast Report</title>
-                        </head>
-                        <body>
-                            {st.session_state['_rendered_page']}
-                        </body>
-                        </html>
-                        """
-                        tmp_html.write(html_content.encode("utf-8"))
-                        tmp_html_path = tmp_html.name
-
-                    # Convert HTML to PDF
-                    pdf_output_path = tmp_html_path.replace(".html", ".pdf")
-                    pdfkit.from_file(tmp_html_path, pdf_output_path)
-
-                    # Offer download
-                    with open(pdf_output_path, "rb") as f:
-                        st.download_button(
-                            label="⬇️ Download Full Report (PDF)",
-                            data=f,
-                            file_name="streamlit_report.pdf",
-                            mime="application/pdf"
-                        )
-                except Exception as e:
-                    st.error(f"❌ Failed to generate full PDF: {e}")
-
             import yagmail
             # Step 10: Generate PDF Report
             st.markdown("### 📤 Step 10: Email Full Report")
@@ -377,7 +337,7 @@ if uploaded_file:
                 for emoji, word in emoji_map.items():
                     text = text.replace(emoji, word)
                 return text
-
+            
             # Email input field
             email_recipient = st.text_input("Enter your email address to receive full report (PDF format):")
 
