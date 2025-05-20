@@ -8,7 +8,17 @@ import io
 st.set_page_config(page_title="Sales Forecasting Tool", layout="wide")
 
 st.title("📊 Quarterly Sales Forecasting Tool")
-st.markdown("Upload your Excel file in the correct format to analyze trends and generate forecasts.")
+st.markdown("""
+Welcome! This tool helps you forecast quarterly sales using your historical data.
+Follow these simple steps to get started:
+
+### 🛠️ How to Use:
+1. **Download the Template:** Use the sidebar button **“📥 Download Sample Excel Template”**  
+2. **Enter Your Data:** Fill in your actual sales data (e.g., year, quarter, time period, and sales)  
+3. **Upload the File:** Use the **file uploader** in the sidebar  
+4. **Choose Forecast Horizon:** Adjust how many quarters you want to forecast  
+5. **Click Through the Steps:** The app will walk you through trend analysis, seasonality detection, forecasting, model evaluation, and PDF/email export  
+""")
 
 # Sample download
 with open("template_sales_data.xlsx", "rb") as f:
