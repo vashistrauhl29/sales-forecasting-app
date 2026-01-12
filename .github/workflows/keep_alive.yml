@@ -14,4 +14,4 @@ jobs:
       - name: Wake up Streamlit App
         # Replace the URL below with your actual App URL
         run: |
-          curl -I https://mac-npi-sequencer-lfjkucxeaoczm3uwy7e6k2.streamlit.app/
+          curl -I https://sales-forecasting-app-zlhss5wk5cojw96tkjyzg7.streamlit.app//
